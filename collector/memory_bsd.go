@@ -98,7 +98,7 @@ func NewMemoryCollector() (Collector, error) {
 			{
 				name:        "swap_size_bytes",
 				description: "Total swap memory size",
-				mib:         "vm.swap_total",
+				mib:         "vm.swap_size",
 				dataType:    bsdSysctlTypeUint64,
 			},
 			// Descriptions via: top(1)
@@ -126,7 +126,7 @@ func (c *memoryCollector) Update(ch chan<- prometheus.Metric) error {
 	for _, m := range c.sysctls {
 		v, err := m.Value()
 		if err != nil {
-			return fmt.Errorf("couldn't get memory: %s", err)
+			return fmt.Errorf("couldn't get memory with %s: %s", m, err)
 		}
 
 		// Most are gauges.
